@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+  <title>Ali Ahmed Zaher — Crown Swarm Transition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow: hidden;
+    }
+
+    .stack-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 100px 60px 40px 60px;
+      background: #000;
+      overflow-y: auto;
+      transition: all 0.8s cubic-bezier(0.3, 0.9, 0.2, 1);
+    }
+
+    .scene::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scene::-webkit-scrollbar-track {
+      background: #111;
+    }
+    .scene::-webkit-scrollbar-thumb {
+      background: #c8a882;
+      border-radius: 10px;
+    }
+
+    .scene-0 { transform: translateZ(0px) scale(1); opacity: 1; z-index: 5; }
+    .scene-1 { transform: translateZ(-200px) scale(0.94); opacity: 0; z-index: 4; }
+    .scene-2 { transform: translateZ(-400px) scale(0.88); opacity: 0; z-index: 3; }
+    .scene-3 { transform: translateZ(-600px) scale(0.82); opacity: 0; z-index: 2; }
+    .scene-4 { transform: translateZ(-800px) scale(0.76); opacity: 0; z-index: 1; }
+
+    .scene.active {
+      transform: translateZ(0px) scale(1);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    #hero {
+      justify-content: center;
+      padding-top: 100px;
+    }
+
+    #hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 15vw, 180px);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .hollow {
+      -webkit-text-stroke: 2px #fff;
+      color: transparent;
+    }
+
+    #hero p {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 500px;
+      margin: 20px 0;
+    }
+
+    #hero .cta {
+      display: inline-block;
+      padding: 12px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: fit-content;
+      transition: all 0.3s;
+    }
+
+    #hero .cta:hover {
+      border-color: #c8a882;
+      background: rgba(200, 168, 130, 0.1);
+    }
+
+    .sec-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c8a882;
+      margin-bottom: 15px;
+    }
+
+    .scene h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 8vw, 80px);
+      line-height: 0.92;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+
+    #about p {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    #skills ul {
+      list-style: none;
+      border-top: 1px solid #222;
+    }
+    #skills li {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(24px, 4vw, 40px);
+      color: #fff;
+      padding: 15px 0;
+      border-bottom: 1px solid #222;
+      transition: all 0.2s;
+    }
+    #skills li:hover {
+      padding-left: 20px;
+      color: #c8a882;
+    }
+
+    #projects article {
+      border-top: 1px solid #222;
+      padding: 20px 0;
+      transition: all 0.3s;
+    }
+    #projects article:last-child {
+      border-bottom: 1px solid #222;
+    }
+    #projects article:hover {
+      padding-left: 20px;
+    }
+    #projects h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    #projects p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 10px;
+    }
+    #projects a {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c8a882;
+      text-decoration: none;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    #contact a {
+      display: inline-block;
+      padding: 12px 30px;
+      border: 1px solid #333;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    #contact a:hover {
+      border-color: #c8a882;
+      color: #fff;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #222;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+    }
+    nav ul {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    nav ul a {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    nav ul a:hover {
+      color: #fff;
+    }
+    nav ul a.active-link {
+      color: #c8a882;
+    }
+
+    #progress-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 200;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: #c8a882;
+      transform: scale(1.5);
+      box-shadow: 0 0 10px rgba(200,168,130,0.6);
+    }
+
+    .marquee-band {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      padding: 8px 0;
+      white-space: nowrap;
+      z-index: 199;
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid #111;
+      pointer-events: none;
+    }
+    .marquee-inner {
+      display: inline-flex;
+      gap: 30px;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-inner span {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #444;
+    }
+    .marquee-inner .dot-m {
+      color: #c8a882;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .hero-shape {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      transition: all 1s cubic-bezier(0.2, 0.8, 0.3, 1);
+      will-change: transform;
+    }
+    .crown-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 40px rgba(200, 168, 130, 0.6));
+    }
+
+    .crown-size-hero { width: 360px; height: 360px; right: 5%; top: 40%; }
+    .crown-size-about { width: 290px; height: 290px; right: 3%; top: 35%; }
+    .crown-size-skills { width: 260px; height: 260px; right: 8%; top: 45%; }
+    .crown-size-projects { width: 270px; height: 270px; right: 6%; top: 40%; }
+    .crown-size-contact { width: 310px; height: 310px; right: 2%; top: 50%; }
+
+    .particle {
+      position: fixed;
+      background: #c8a882;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 51;
+      box-shadow: 0 0 8px rgba(200,168,130,0.8);
+    }
+
+    /* Small crown flying particles */
+    .flying-crown {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      filter: drop-shadow(0 0 12px rgba(200,168,130,0.9));
+    }
+    .flying-crown img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #custom-cursor, #custom-cursor-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    #custom-cursor {
+      width: 8px;
+      height: 8px;
+      background: #c8a882;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(200,168,130,0.9);
+    }
+    #custom-cursor-ring {
+      width: 42px;
+      height: 42px;
+      border: 1.5px solid rgba(200,168,130,0.6);
+      border-radius: 50%;
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+      box-shadow: 0 0 15px rgba(200,168,130,0.3);
+    }
+    body.hovering #custom-cursor-ring {
+      width: 56px;
+      height: 56px;
+      border-color: #c8a882;
+      box-shadow: 0 0 25px rgba(200,168,130,0.6);
+    }
+
+    #ripple-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9995;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        linear-gradient(rgba(200, 168, 130, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 168, 130, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridPulse 4s ease-in-out infinite;
+    }
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .scroll-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #c8a882;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      z-index: 200;
+      opacity: 0.6;
+      pointer-events: none;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+      50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 15px 20px; }
+      nav ul { display: none; }
+      .scene { padding: 80px 20px 30px 20px; }
+      .hero-shape { display: none; }
+      #progress-dots { display: none; }
+      .scroll-hint { display: none; }
+      #hero h1 { font-size: 50px; }
+      #custom-cursor, #custom-cursor-ring { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="ripple-canvas"></canvas>
+<div id="custom-cursor"></div>
+<div id="custom-cursor-ring"></div>
+
+<header>
+  <nav>
+    <div class="nav-logo" id="logo-home">ALI.</div>
+    <ul>
+      <li><a class="nav-link" data-idx="0">HOME</a></li>
+      <li><a class="nav-link" data-idx="1">ABOUT</a></li>
+      <li><a class="nav-link" data-idx="2">SKILLS</a></li>
+      <li><a class="nav-link" data-idx="3">PROJECTS</a></li>
+      <li><a class="nav-link" data-idx="4">CONTACT</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span>✦ CROWN SWARM TRANSITION ✦</span><span class="dot-m">✦</span>
+    <span>Software Engineering</span><span class="dot-m">✦</span>
+    <span>Web Development</span><span class="dot-m">✦</span>
+    <span>Game Dev</span><span class="dot-m">✦</span>
+    <span>C++ · Java · C# · Python</span><span class="dot-m">✦</span>
+    <span>GIU Cairo</span><span class="dot-m">✦</span>
+    <span>✦ 60 CROWNS FLYING ACROSS SCREEN ✦</span><span class="dot-m">✦</span>
+  </div>
+</div>
+
+<div id="progress-dots">
+  <div class="dot active" data-dot="0"></div>
+  <div class="dot" data-dot="1"></div>
+  <div class="dot" data-dot="2"></div>
+  <div class="dot" data-dot="3"></div>
+  <div class="dot" data-dot="4"></div>
+</div>
+
+<div class="scroll-hint">↓ SCROLL ↓</div>
+
+<div class="hero-shape crown-size-hero" id="crown-object">
+  <img src="./crown.png" alt="crown" class="crown-img" id="main-crown" onerror="this.style.display='none'"/>
+</div>
+
+<div class="stack-container">
+  <section class="scene scene-0 active" id="hero">
+    <h1>ALI<br>AHMED<br><span class="hollow">ZAHER</span></h1>
+    <p>Software Engineering student at the German International University.</p>
+    <div class="cta" id="hero-cta">EXPLORE →</div>
+  </section>
+
+  <section class="scene scene-1" id="about">
+    <p class="sec-label">01 — ABOUT</p>
+    <h2>Who I am</h2>
+    <p>I'm Ali Ahmed Zaher, a Computer Science student at the German International University, specializing in Software Engineering. I'm passionate about building software that solves real problems.</p>
+    <br>
+    <p>I believe in minimal design, strong typography, and immersive storytelling. Every line of code I write is an opportunity to create something meaningful.</p>
+  </section>
+
+  <section class="scene scene-2" id="skills">
+    <p class="sec-label">02 — SKILLS</p>
+    <h2>What I know</h2>
+    <ul>
+      <li>C++</li>
+      <li>Java</li>
+      <li>C# / Unity</li>
+      <li>HTML · CSS · JavaScript</li>
+      <li>Python</li>
+      <li>Data Structures</li>
+      <li>Git / GitHub</li>
+      <li>Digital Logic</li>
+    </ul>
+  </section>
+
+  <section class="scene scene-3" id="projects">
+    <p class="sec-label">03 — PROJECTS</p>
+    <h2>What I've built</h2>
+    <article>
+      <h3>GIU Nexus</h3>
+      <p>A job-finding platform for GIU students to find internships and jobs.</p>
+      <a href="https://github.com/Ali-Zaher-1" target="_blank">View on GitHub →</a>
+    </article>
+    <article>
+      <h3>2D Parkour Game</h3>
+      <p>A Minecraft-inspired 2D platformer built in Unity with C#.</p>
+      <a href="https://github.com/Ali-Zaher-1" target="_blank">View on GitHub →</a>
+    </article>
+    <article>
+      <h3>Jacaroo</h3>
+      <p>A full implementation of the classic Jacaroo board game built in Java.</p>
+      <a href="https://github.com/Ali-Zaher-1" target="_blank">View on GitHub →</a>
+    </article>
+  </section>
+
+  <section class="scene scene-4" id="contact">
+    <p class="sec-label">04 — CONTACT</p>
+    <h2>Let's talk</h2>
+    <div class="contact-links">
+      <a href="mailto:ali2006ahmed9@gmail.com">EMAIL ME</a>
+      <a href="https://github.com/Ali-Zaher-1" target="_blank">GITHUB</a>
+      <a href="https://www.linkedin.com/in/ali-zaher-1696653b6" target="_blank">LINKEDIN</a>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function() {
+    // ----------------------------- CUSTOM CURSOR -----------------------------
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (!isMobile) {
+      document.body.style.cursor = 'none';
+      document.getElementById('custom-cursor').style.display = 'block';
+      document.getElementById('custom-cursor-ring').style.display = 'block';
+    }
+    
+    const customCursor = document.getElementById('custom-cursor');
+    const customRing = document.getElementById('custom-cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (customCursor) {
+        customCursor.style.left = mouseX + 'px';
+        customCursor.style.top = mouseY + 'px';
+      }
+    });
+    
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      if (customRing) {
+        customRing.style.left = ringX + 'px';
+        customRing.style.top = ringY + 'px';
+      }
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    
+    const interactiveElements = document.querySelectorAll('a, .cta, .dot, .nav-link, .nav-logo');
+    interactiveElements.forEach(function(el) {
+      el.addEventListener('mouseenter', function() { document.body.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function() { document.body.classList.remove('hovering'); });
+    });
+    
+    // ----------------------------- SCENE SWITCHING WITH CROWN SWARM -----------------------------
+    const scenes = document.querySelectorAll('.scene');
+    const totalScenes = scenes.length;
+    let currentIndex = 0;
+    let isTransitioning = false;
+    const crownEl = document.getElementById('crown-object');
+    const mainCrownImg = document.getElementById('main-crown');
+    
+    const crownSizes = ['crown-size-hero', 'crown-size-about', 'crown-size-skills', 'crown-size-projects', 'crown-size-contact'];
+    const crownPos = [
+      { x: 60, y: -45, r: 0, s: 1.0 },
+      { x: -190, y: -45, r: 6, s: 0.85 },
+      { x: -60, y: -45, r: -6, s: 0.75 },
+      { x: 60, y: -45, r: 0, s: 0.8 },
+      { x: 0, y: -45, r: 0, s: 0.9 }
+    ];
+    
+    let extraX = 0, extraY = 0;
+    let targetX = crownPos[0].x, targetY = crownPos[0].y, targetR = crownPos[0].r, targetS = crownPos[0].s;
+    let curX = crownPos[0].x, curY = crownPos[0].y, curR = crownPos[0].r, curS = crownPos[0].s;
+    
+    // ========== FIXED: Create flying small crowns from MULTIPLE positions across the screen ==========
+    function createFlyingCrownSwarm() {
+      const crownCount = 60; // 60 small crowns flying everywhere!
+      const crownImgSrc = './crown.png';
+      
+      // Spawn points across the ENTIRE screen - left, center, right, top, bottom
+      const spawnPoints = [
+        { x: window.innerWidth * 0.15, y: window.innerHeight * 0.2 },  // Top Left
+        { x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 },   // Left Center
+        { x: window.innerWidth * 0.5, y: window.innerHeight * 0.5 },   // Exact Center
+        { x: window.innerWidth * 0.7, y: window.innerHeight * 0.3 },   // Right Center
+        { x: window.innerWidth * 0.85, y: window.innerHeight * 0.2 },  // Top Right
+        { x: window.innerWidth * 0.2, y: window.innerHeight * 0.7 },   // Bottom Left
+        { x: window.innerWidth * 0.5, y: window.innerHeight * 0.2 },   // Top Center
+        { x: window.innerWidth * 0.8, y: window.innerHeight * 0.7 },   // Bottom Right
+        { x: window.innerWidth * 0.5, y: window.innerHeight * 0.8 },   // Bottom Center
+        { x: window.innerWidth * 0.1, y: window.innerHeight * 0.5 },   // Far Left
+        { x: window.innerWidth * 0.9, y: window.innerHeight * 0.5 },   // Far Right
+        { x: window.innerWidth * 0.4, y: window.innerHeight * 0.6 },   // Middle Left Bottom
+        { x: window.innerWidth * 0.6, y: window.innerHeight * 0.4 },   // Middle Right Top
+      ];
+      
+      for (let i = 0; i < crownCount; i++) {
+        // Pick a random spawn point
+        const spawnPoint = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+        // Add random offset to each crown for natural spread
+        const startX = spawnPoint.x + (Math.random() - 0.5) * 120;
+        const startY = spawnPoint.y + (Math.random() - 0.5) * 100;
+        
+        const flyingCrown = document.createElement('div');
+        flyingCrown.className = 'flying-crown';
+        const size = 18 + Math.random() * 42; // Random size 18-60px
+        flyingCrown.style.width = size + 'px';
+        flyingCrown.style.height = size + 'px';
+        flyingCrown.style.left = startX + 'px';
+        flyingCrown.style.top = startY + 'px';
+        
+        const crownImg = document.createElement('img');
+        crownImg.src = crownImgSrc;
+        crownImg.style.width = '100%';
+        crownImg.style.height = '100%';
+        crownImg.style.objectFit = 'contain';
+        flyingCrown.appendChild(crownImg);
+        document.body.appendChild(flyingCrown);
+        
+        // Random direction - fly in all directions
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 300 + Math.random() * 700;
+        const targetX = startX + Math.cos(angle) * distance;
+        const targetY = startY + Math.sin(angle) * distance;
+        const startRot = Math.random() * 360;
+        const endRot = startRot + (Math.random() * 720 - 360);
+        
+        let progress = 0;
+        const duration = 2000; // 2 seconds - slow and smooth
+        const startTime = performance.now();
+        
+        function animateFlyingCrown(now) {
+          const elapsed = now - startTime;
+          progress = Math.min(1, elapsed / duration);
+          
+          // Smooth cubic easing
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          
+          const currentX = startX + (targetX - startX) * easeProgress;
+          const currentY = startY + (targetY - startY) * easeProgress;
+          const currentRot = startRot + (endRot - startRot) * easeProgress;
+          
+          // Fade out towards the end
+          const opacity = progress < 0.7 ? 1 : 1 - (progress - 0.7) / 0.3;
+          
+          flyingCrown.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${currentRot}deg)`;
+          flyingCrown.style.opacity = Math.max(0, Math.min(1, opacity));
+          
+          if (progress < 1) {
+            requestAnimationFrame(animateFlyingCrown);
+          } else {
+            flyingCrown.remove();
+          }
+        }
+        
+        requestAnimationFrame(animateFlyingCrown);
+      }
+    }
+    
+    // Slow smooth pulse for main crown
+    function slowCrownPulse() {
+      if (!mainCrownImg) return;
+      mainCrownImg.style.transition = 'transform 0.8s ease-in-out, filter 0.8s ease-in-out';
+      mainCrownImg.style.transform = 'scale(1.15)';
+      mainCrownImg.style.filter = 'drop-shadow(0 0 80px rgba(200,168,130,0.9))';
+      setTimeout(() => {
+        mainCrownImg.style.transform = 'scale(1)';
+        mainCrownImg.style.filter = 'drop-shadow(0 0 40px rgba(200,168,130,0.6))';
+        setTimeout(() => {
+          mainCrownImg.style.transition = '';
+        }, 800);
+      }, 800);
+    }
+    
+    // Gentle flash background
+    function gentleFlash() {
+      const flashDiv = document.createElement('div');
+      flashDiv.style.position = 'fixed';
+      flashDiv.style.top = '0';
+      flashDiv.style.left = '0';
+      flashDiv.style.width = '100%';
+      flashDiv.style.height = '100%';
+      flashDiv.style.backgroundColor = 'rgba(200, 168, 130, 0.15)';
+      flashDiv.style.pointerEvents = 'none';
+      flashDiv.style.zIndex = '9997';
+      flashDiv.style.opacity = '0';
+      flashDiv.style.transition = 'opacity 0.4s ease';
+      document.body.appendChild(flashDiv);
+      
+      setTimeout(() => { flashDiv.style.opacity = '1'; }, 10);
+      setTimeout(() => { flashDiv.style.opacity = '0'; }, 400);
+      setTimeout(() => { flashDiv.remove(); }, 900);
+    }
+    
+    function updateCrownSize(index) {
+      crownSizes.forEach(function(c) { crownEl.classList.remove(c); });
+      crownEl.classList.add(crownSizes[index]);
+    }
+    
+    function goToSection(index) {
+      if (isTransitioning) return;
+      if (index < 0 || index >= totalScenes) return;
+      if (index === currentIndex) return;
+      
+      isTransitioning = true;
+      
+      // ========== CREATE THE SWARM OF SMALL CROWNS ACROSS THE WHOLE SCREEN ==========
+      createFlyingCrownSwarm();  // This now creates crowns from all over the screen!
+      
+      // Animate main crown
+      slowCrownPulse();
+      
+      // Gentle flash effect
+      gentleFlash();
+      
+      // Wait for transition animation then switch section
+      setTimeout(() => {
+        scenes.forEach(function(scene) { scene.classList.remove('active'); });
+        scenes[index].classList.add('active');
+        scenes[index].scrollTop = 0;
+        
+        updateCrownSize(index);
+        if (crownPos[index]) {
+          targetX = crownPos[index].x;
+          targetY = crownPos[index].y;
+          targetR = crownPos[index].r;
+          targetS = crownPos[index].s;
+        }
+        
+        updateDots(index);
+        updateNavLinks(index);
+        currentIndex = index;
+        
+        setTimeout(() => { isTransitioning = false; }, 400);
+      }, 700);
+    }
+    
+    function updateDots(idx) {
+      document.querySelectorAll('#progress-dots .dot').forEach(function(dot, i) {
+        dot.classList.toggle('active', i === idx);
+      });
+    }
+    
+    function updateNavLinks(idx) {
+      document.querySelectorAll('nav ul a').forEach(function(link, i) {
+        link.classList.toggle('active-link', i === idx);
+      });
+    }
+    
+    // Wheel navigation
+    window.addEventListener('wheel', function(e) {
+      if (isTransitioning) return;
+      const activeScene = scenes[currentIndex];
+      const isAtTop = activeScene.scrollTop <= 5;
+      const isAtBottom = (activeScene.scrollHeight - activeScene.clientHeight - activeScene.scrollTop) <= 5;
+      
+      if (e.deltaY > 0 && isAtBottom && currentIndex < totalScenes - 1) {
+        e.preventDefault();
+        goToSection(currentIndex + 1);
+      }
+      else if (e.deltaY < 0 && isAtTop && currentIndex > 0) {
+        e.preventDefault();
+        goToSection(currentIndex - 1);
+      }
+    }, { passive: false });
+    
+    // Touch support
+    let touchStart = 0;
+    window.addEventListener('touchstart', function(e) {
+      touchStart = e.touches[0].clientY;
+    });
+    window.addEventListener('touchend', function(e) {
+      if (isTransitioning) return;
+      const diff = touchStart - e.changedTouches[0].clientY;
+      const activeScene = scenes[currentIndex];
+      const isAtTop = activeScene.scrollTop <= 5;
+      const isAtBottom = (activeScene.scrollHeight - activeScene.clientHeight - activeScene.scrollTop) <= 5;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0 && isAtBottom && currentIndex < totalScenes - 1) {
+          goToSection(currentIndex + 1);
+        } else if (diff < 0 && isAtTop && currentIndex > 0) {
+          goToSection(currentIndex - 1);
+        }
+      }
+    });
+    
+    // Click navigation
+    document.querySelectorAll('.nav-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        if (!isNaN(idx)) goToSection(idx);
+      });
+    });
+    document.querySelectorAll('#progress-dots .dot').forEach(function(dot) {
+      dot.addEventListener('click', function() {
+        var idx = parseInt(this.getAttribute('data-dot'), 10);
+        if (!isNaN(idx)) goToSection(idx);
+      });
+    });
+    document.getElementById('logo-home').addEventListener('click', function() { goToSection(0); });
+    document.getElementById('hero-cta').addEventListener('click', function() { goToSection(1); });
+    
+    // Crown smooth animation
+    function animateCrown() {
+      curX += (targetX + extraX - curX) * 0.04;
+      curY += (targetY + extraY - curY) * 0.04;
+      curR += (targetR - curR) * 0.025;
+      curS += (targetS - curS) * 0.04;
+      if (crownEl) {
+        crownEl.style.transform = 'translateX(' + curX + 'px) translateY(' + curY + '%) rotate(' + curR + 'deg) scale(' + curS + ')';
+      }
+      requestAnimationFrame(animateCrown);
+    }
+    animateCrown();
+    
+    // Mouse shadow on crown
+    document.addEventListener('mousemove', function(e) {
+      var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+      extraX = (e.clientX - cx) / cx * 20;
+      extraY = (e.clientY - cy) / cy * 20;
+      if (crownEl) {
+        var mx = (e.clientX - cx) / cx * 10;
+        var my = (e.clientY - cy) / cy * 10;
+        crownEl.style.filter = 'drop-shadow(' + mx + 'px ' + my + 'px 20px rgba(200,168,130,0.4))';
+      }
+    });
+    
+    // Water ripple effect
+    const rippleCanvas = document.getElementById('ripple-canvas');
+    const rippleCtx = rippleCanvas.getContext('2d');
+    
+    function resizeRipple() {
+      rippleCanvas.width = window.innerWidth;
+      rippleCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeRipple);
+    resizeRipple();
+    
+    let ripples = [];
+    
+    document.addEventListener('mousemove', function(e) {
+      ripples.push({ x: e.clientX, y: e.clientY, radius: 0, opacity: 0.6, speed: 2, width: 2 });
+    });
+    
+    function drawRipples() {
+      rippleCtx.clearRect(0, 0, rippleCanvas.width, rippleCanvas.height);
+      ripples = ripples.filter(function(r) { return r.opacity > 0; });
+      
+      ripples.forEach(function(r) {
+        rippleCtx.beginPath();
+        rippleCtx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+        rippleCtx.strokeStyle = 'rgba(200, 168, 130, ' + r.opacity + ')';
+        rippleCtx.lineWidth = r.width;
+        rippleCtx.stroke();
+        
+        if (r.radius > 12) {
+          rippleCtx.beginPath();
+          rippleCtx.arc(r.x, r.y, r.radius * 0.6, 0, Math.PI * 2);
+          rippleCtx.strokeStyle = 'rgba(255, 210, 150, ' + (r.opacity * 0.5) + ')';
+          rippleCtx.lineWidth = r.width * 0.7;
+          rippleCtx.stroke();
+        }
+        
+        r.radius += r.speed;
+        r.opacity -= 0.018;
+        r.speed *= 0.97;
+      });
+      
+      requestAnimationFrame(drawRipples);
+    }
+    drawRipples();
+    
+    // Gold particles around crown
+    const particles = [];
+    for (var i = 0; i < 24; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+      document.body.appendChild(p);
+      var sz = 2 + Math.random() * 4;
+      p.style.width = sz + 'px';
+      p.style.height = sz + 'px';
+      particles.push({
+        el: p, size: sz,
+        angle: (i / 24) * Math.PI * 2,
+        radius: 90 + Math.random() * 140,
+        speed: 0.0025 + Math.random() * 0.004,
+        opacity: 0.4 + Math.random() * 0.6,
+        offsetY: Math.random() * 80 - 40
+      });
+    }
+    
+    function animateParticles() {
+      if (!crownEl) return;
+      var rect = crownEl.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      particles.forEach(function(p) {
+        p.angle += p.speed;
+        var x = cx + Math.cos(p.angle) * p.radius;
+        var y = cy + Math.sin(p.angle) * p.radius + p.offsetY;
+        p.el.style.left = x + 'px';
+        p.el.style.top = y + 'px';
+        p.el.style.opacity = p.opacity * curS;
+        p.el.style.transform = 'translate(-50%, -50%)';
+        var pulse = 1 + Math.sin(p.angle * 3) * 0.5;
+        p.el.style.width = p.size * pulse + 'px';
+        p.el.style.height = p.size * pulse + 'px';
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+    
+    updateCrownSize(0);
+  })();
+</script>
+</body>
+</html>
