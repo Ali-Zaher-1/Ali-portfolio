@@ -2,7 +2,7 @@
 
 A premium, cinematic portfolio website with 3D space transitions, crown swarm animations, and interactive water ripple cursor effects.
 
-🔴 **Live Demo:** [View Portfolio](https://ali-zaher-1.github.io/Ali-portfolio/)
+🔴 **Live Demo:** [View Portfolio](https://ali-zaher-1.github.io/Ali-portfolio-Task1-Ali-Zaher/)
 
 ---
 
@@ -98,7 +98,7 @@ git clone https://github.com/Ali-Zaher-1/Ali-portfolio.git
 
 The site is deployed using **GitHub Pages** and can be viewed at:
 
-**https://ali-zaher-1.github.io/Ali-portfolio/**
+**https://ali-zaher-1.github.io/Ali-portfolio-Task1-Ali-Zaher/**
 
 ---
 
